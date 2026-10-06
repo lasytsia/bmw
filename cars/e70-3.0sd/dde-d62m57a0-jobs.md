@@ -17,6 +17,7 @@
 | `status_regeneration_csf`, `status_restlaufstrecke_csf`, `status_partikelfilter_verbaut` | стан DPF | — |
 | `status_kilometerstand`, `status_betriebsstundenzaehler` | пробіг / мотогодини | — |
 | `abgleich_ima_lesen` | IMA-коди форсунок | — |
+| `status_glf`, `status_glf2` | ймовірно стан системи розжарення (перевірити) | — |
 
 ## НЕ запускати без потреби: змінюють дані
 `fs_loeschen`, `*_loeschen`, `lernwerte_ruecksetzen`, `cbs_reset`, `steuern_*`, `*_prog*`, `*_schreiben`, `abgleich_verstellen*`, `steuergeraete_reset`, `steuern_eep_defekt_reset`
