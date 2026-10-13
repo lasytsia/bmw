@@ -78,3 +78,10 @@
 | EWS4_SERVER_KEY_TXT | WAIT_FSC_UNLOCKED (EWS4 не налаштований — норма для EWS3) |
 
 **Висновок**: на авто працює **EWS3 — плаваючий код** (змінюється на кожному пуску), саме той тип, що може розсинхронізуватись при просіданні напруги під час прокручування. Версія EWS посилюється. Синхронізація EWS3: CAS `dme_startwert_abgleich` або INPA DDE «EWS Startwert zurücksetzen / synchronisieren» (в DDE є job `ews_startwert`). Перед запуском — Job-Info обох.
+
+### Крок 1 перед синхронізацією (13.10.2026 ~11:30) — стан збережено
+- CAS FS_LESEN: A0B2 (живлення CAS, історична) + **НОВА: A126 Unplausibilitaet_ACK_KL15_Off — «Signal oder Wert unterhalb Schwelle», АКТИВНА** (неправдоподібне підтвердження вимкнення клеми 15, сигнал нижче порогу).
+- status_ews: без змін (EWS3 активний).
+- istufe_lesen_cas: сирі байти `0B 15 E1 3C CB 2C D4 34` (текст не декодовано).
+- DDE: ті самі помилки (живлення/MAF — «bisher nicht aufgetreten», свічки), ews_empfang = 5.
+- Далі: fs_lesen_detail 0xA126 у CAS; Job-Info `dme_startwert_abgleich`.
