@@ -163,3 +163,15 @@
 - Read initialised indicator: CAS ECU = **Locked**, TRSP SW = **Activated** → норма для робочого авто (CAS ініціалізований і заблокований, ПЗ транспондера активне).
 - Status RC signal: усі 00 (брелок, не стосується).
 - Далі: CAN Signale → F1 Engine status, F2 Ignition/Key; F7 CAS/EWS version; F4 actual key.
+
+### ⭐ Процедура з INPA-скрипта DDE6M57.IPO (екран «CAS-/EWS3-DDE start value synchronisation»), перевірено рядками файлу
+Меню: F1 «CAS-Startwert uebertragen» (store), F2 «CAS-Startwert zuruecksetzen» (reset). Послідовність викликів:
+| Крок | SGBD | Job | Аргумент |
+|---|---|---|---|
+| 1 | CAS | IDENT | — |
+| 2 | CAS | DME_STARTWERT_ABGLEICH | — |
+| 3 | DDE | EWS_STARTWERT | **0x00 = store**, **0x01 = reset** |
+| 4 | DDE | (результат EWS_STATUS / STAT_EWS_WERT) | — |
+| 5 | DDE | EWS_EMPFANG | **0x01** |
+| 6 | DDE | (результат EWS_EMPFANGSSTATUS) | — |
+Те саме в D50M57.IPO (DDE5). Ми робили лише варіант «store» (EWS_STARTWERT порожній = 0x00) → 0x01 «немає вільного стартового значення з дозволом». Варіант **reset (0x01)** ще не пробували; EWS_EMPFANG запускали без аргументу (а INPA — з 0x01).
