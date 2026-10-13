@@ -64,3 +64,6 @@
 - Читання (безпечно): `status_aktuell_schluessel`, `status_dme_ringbuffer`, `status_ews4_sk`, `status_cas_diagnose`, `status_fertig_transp_werkst`, `status_elv`, `fs_lesen_detail`, `is_lesen`.
 - Синхронізація: **`dme_startwert_abgleich`** (є!) — лише після аналізу Job-Info.
 - НЕ запускати: `set_key_init`, `set_key_mode`, `*_schreiben`, `flash_*`, `steuergeraete_reset`, `aif_schreiben`, `aktualisieren_chip_card_daten`, `*_loeschen`.
+- Ще статуси CAS (читання): `status_ews`, `status_schluessel_frei_gesperrt`, `status_klemmenverhinderer`, `status_kl15_abschaltung`, `status_fzg_zustand`, `status_wakeup_history`, `istufe_lesen_cas`.
+- `status_isn` — секретний номер імобілайзера: не публікувати.
+- НЕ запускати жоден `steuern_*` (особливо `steuern_isn`, `steuern_ews4_sk`, `steuern_schluessel_gesperrt`, `steuern_kl15_abschaltung`) та `istufe_schreiben_cas`.
