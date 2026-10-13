@@ -100,3 +100,9 @@
 - Job-Info `ews_startwert` (D_MOTOR): коментар «EWS-Empfangsstatus auslesen» (схоже на копію), KWP2000 $21; **аргумент PARAMETER (int) «Parameter zur Initialisierung»** — значення невідомі; результати EWS_STATUS / STAT_EWS_WERT «Rueckgabestatus bei der Startwertinitialisierung». → Це ініціалізація стартового значення в DDE, але без відомих значень параметра НЕ запускати. Шукати таблицю значень у Tabellen-Info або робити через INPA (скрипт знає параметри).
 - INPA 5.0.6 (Auswahl E70 V0.08) → Engine → «DDE 6 for M57TOP/M57TU2»: **«Requested control unit D60M57D0, D62M57B0 not found. Found D62M57A0. Program will be stopped»** → скрипт INPA не підтримує варіант D62M57A0. Варіанти: новіші скрипти INPA; таблиці SGBD у Toolset32 (значення параметра ews_startwert); ISTA.
 - Форум (bmw-syndikat): ews_startwert запускали в Tool32 з аргументом, після чого синхронізація в INPA допомогла; типовий статус «no free start value». Точних значень параметра не отримано (сторінки недоступні).
+
+### ⭐ ews_startwert (D_MOTOR, порожній аргумент), 13.10.2026
+- Запит `31 83 00` (StartRoutineByLocalIdentifier 0x83, параметр 0), відповідь `71 83 01`.
+- **EWS_STATUS = «kein freier Startwert mit Freigabe vorhanden»**, STAT_EWS_WERT = 1.
+- **Висновок: DDE підтверджує, що НЕ має дійсного стартового значення з дозволом → імобілайзер EWS3 блокує запуск/впорскування. Причину незапуску знайдено.**
+- Синхронізація з CAS (dme_startwert_abgleich OKAY) не допомогла → потрібне скидання/ініціалізація стартового значення в DDE (інший параметр ews_startwert) у тому ж циклі, потім CAS sync. Значення параметра — шукати в Tabellen-Info D62M57A0 (таблиця з текстом «kein freier Startwert…»).
