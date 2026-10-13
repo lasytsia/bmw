@@ -94,3 +94,6 @@
 - Перед цим status_ubatt = 13.33 В (донор працює).
 - `dme_startwert_abgleich` (D_CAS): **JOB_STATUS = OKAY**, відповідь `71 20 44` (позитивна відповідь на StartRoutine $20).
 - Далі: запалювання вимк., ключ вийняти, 30 с, запуск; після — ews_empfang, FS_LESEN DDE і CAS.
+- Після синхронізації + перезапуску (12:13–12:15): DDE помилки без змін; **ews_empfang усе ще 5** («Programmierung bzw. Ruecksetzen im Fahrzyklus noch nicht ausgefuehrt»); CAS: **A126 досі активна при 13.3 В** (не лише від просідання напруги).
+- Гіпотеза: DDE очікує **скидання стартового значення на своєму боці в тому ж циклі запалювання** (INPA: «EWS Startwert zurücksetzen» → «synchronisieren»), лише потім копіювання з CAS спрацює. Потрібен Job-Info `ews_startwert` (D_MOTOR). Паралельно: A126 — перевірити реле/живлення клеми 15.
+- 4BC2 (MAF) знову «momentan vorhanden» — перевірити, що роз'єм MAF підключений.
