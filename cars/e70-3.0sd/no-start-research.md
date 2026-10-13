@@ -67,3 +67,14 @@
 - Ще статуси CAS (читання): `status_ews`, `status_schluessel_frei_gesperrt`, `status_klemmenverhinderer`, `status_kl15_abschaltung`, `status_fzg_zustand`, `status_wakeup_history`, `istufe_lesen_cas`.
 - `status_isn` — секретний номер імобілайзера: не публікувати.
 - НЕ запускати жоден `steuern_*` (особливо `steuern_isn`, `steuern_ews4_sk`, `steuern_schluessel_gesperrt`, `steuern_kl15_abschaltung`) та `istufe_schreiben_cas`.
+
+### status_ews (D_CAS), 13.10.2026
+| Параметр | Значення |
+|---|---|
+| EWS3_CAPABLE / EWS4_CAPABLE | 1 / 1 |
+| **EWS3_ACTIVE** | **1** |
+| **EWS4_ACTIVE** | **0** |
+| EWS_EGS_ACTIVE | 1 (імобілайзер також на коробку EGS) |
+| EWS4_SERVER_KEY_TXT | WAIT_FSC_UNLOCKED (EWS4 не налаштований — норма для EWS3) |
+
+**Висновок**: на авто працює **EWS3 — плаваючий код** (змінюється на кожному пуску), саме той тип, що може розсинхронізуватись при просіданні напруги під час прокручування. Версія EWS посилюється. Синхронізація EWS3: CAS `dme_startwert_abgleich` або INPA DDE «EWS Startwert zurücksetzen / synchronisieren» (в DDE є job `ews_startwert`). Перед запуском — Job-Info обох.
