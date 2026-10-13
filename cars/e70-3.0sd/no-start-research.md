@@ -59,3 +59,8 @@
 - FS_LESEN: **1 помилка — A0B2 Fehler_CAS_Versorgung** (живлення CAS), «momentan nicht vorhanden» → історична, від глибокого розряду АКБ.
 - **Помилок EWS / синхронізації з DDE у CAS немає** → версія EWS слабшає (але не виключена: розсинхронізація пишеться не завжди).
 - Далі: список job-ів CAS (шукати status/EWS/startwert/abgleich, Job-Info перед запуском), паралельно — маса двигуна / живлення DDE, зворотка форсунок, джгут, осцилограф.
+
+### Job-и D_CAS (частина списку)
+- Читання (безпечно): `status_aktuell_schluessel`, `status_dme_ringbuffer`, `status_ews4_sk`, `status_cas_diagnose`, `status_fertig_transp_werkst`, `status_elv`, `fs_lesen_detail`, `is_lesen`.
+- Синхронізація: **`dme_startwert_abgleich`** (є!) — лише після аналізу Job-Info.
+- НЕ запускати: `set_key_init`, `set_key_mode`, `*_schreiben`, `flash_*`, `steuergeraete_reset`, `aif_schreiben`, `aktualisieren_chip_card_daten`, `*_loeschen`.
