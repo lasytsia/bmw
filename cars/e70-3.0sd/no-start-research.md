@@ -132,3 +132,9 @@
 | 0x21 | 2-aus-3-Startwertablage im Flash nicht in Ordnung |
 
 **Висновки**: це таблиці СТАТУСІВ, не параметрів. Статус 0x05 скидається на кожен цикл запалювання → після першої синхронізації ми читали ews_empfang ПІСЛЯ перезапуску, тож результат синхронізації не побачили. Потрібно: в ОДНОМУ циклі — ews_startwert → dme_startwert_abgleich (CAS) → одразу ews_empfang (результат синхронізації) → ews_startwert.
+
+### Послідовність в одному циклі (13.10.2026, 13.88 В)
+1. ews_startwert → 0x01 «kein freier Startwert mit Freigabe vorhanden»
+2. CAS dme_startwert_abgleich → OKAY (71 20 44)
+3. **ews_empfang одразу → 0x05 «… noch nicht ausgefuehrt»** — DDE не отримав / не обробив програмування від CAS.
+Версії: (а) DDE не в стані «готовий прийняти» (0x00) — потрібне розблокування/скидання з боку DDE, параметр невідомий; (б) лінія EWS між CAS і DDE (окремий провід EWS / «DWA-інтерфейс») — обрив/пошкодження, у т.ч. біля колектора; (в) потрібен ISTA.
