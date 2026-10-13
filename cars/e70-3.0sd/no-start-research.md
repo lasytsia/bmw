@@ -86,3 +86,5 @@
 - DDE: ті самі помилки (живлення/MAF — «bisher nicht aufgetreten», свічки), ews_empfang = 5.
 - Далі: fs_lesen_detail 0xA126 у CAS; Job-Info `dme_startwert_abgleich`.
 - **Job-Info `dme_startwert_abgleich` (CAS)**: «Kopiert bei der EWS-Stufe 3 die I… und startet dann die Initialisierung der DME»; Vorbedingungen: keine; KWP2000 $31 StartRoutineByLocalIdentifier $20; без аргументів; результат лише JOB_STATUS. → Це саме синхронізація EWS3 CAS→DDE. Текст обрізано праворуч — дочитати.
+- fs_lesen_detail 0xA126: F_HFK = 3, 292 600 км, умов не записано → імовірно наслідок низької напруги.
+- **status_ubatt (DDE, запалювання, без прокручування) = 10.03 В** ❌ — критично низько. **Синхронізацію НЕ робити.** Спершу АКБ: зарядити/замінити (після глибокого розряду ймовірно мертва), ціль ≥12.6 В спокою, 13–14 В з зарядним. Потім спробувати завести БЕЗ синхронізації; синхронізація — лише якщо все одно не заводиться.
