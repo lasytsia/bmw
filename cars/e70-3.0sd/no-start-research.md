@@ -106,3 +106,29 @@
 - **EWS_STATUS = «kein freier Startwert mit Freigabe vorhanden»**, STAT_EWS_WERT = 1.
 - **Висновок: DDE підтверджує, що НЕ має дійсного стартового значення з дозволом → імобілайзер EWS3 блокує запуск/впорскування. Причину незапуску знайдено.**
 - Синхронізація з CAS (dme_startwert_abgleich OKAY) не допомогла → потрібне скидання/ініціалізація стартового значення в DDE (інший параметр ews_startwert) у тому ж циклі, потім CAS sync. Значення параметра — шукати в Tabellen-Info D62M57A0 (таблиця з текстом «kein freier Startwert…»).
+
+### Таблиці SGBD D62M57A0
+**EWSSTART** (результат `ews_startwert`):
+| Код | Текст |
+|---|---|
+| 0x00 | DDE bereit, Startwert zu empfangen (DDE готовий прийняти стартове значення) |
+| **0x01** | **kein freier Startwert mit Freigabe vorhanden** ← зараз |
+| 0x02 | noch kein Startwert gespeichert |
+| 0x03 | Startwert nicht plausibel |
+
+**EWSEMPFANGSSTATUS** (результат `ews_empfang`):
+| Код | Текст |
+|---|---|
+| 0x00 | Startwertprogrammierung bzw. -ruecksetzen war erfolgreich ✅ |
+| 0x01 | falscher Startwert beim Ruecksetzen (EWS u. DDE passen nicht) |
+| 0x02 | Telegramminhalt war kein Startwert (event. Wechselcode) |
+| 0x03 | Schnittstellenfehler DWA: Frame o. Parity oder kein Signal |
+| 0x04 | Prozess laeuft |
+| **0x05** | **Programmierung bzw. Ruecksetzen im Fahrzyklus noch nicht ausgefuehrt** ← після кожного перезапуску |
+| 0x06 | gleiche Zufallszahl wie bei vorherigem Ruecksetzen |
+| 0x07 | noch kein Startwert programmiert |
+| 0x10 | Startwert nicht korrekt in Flash programmiert |
+| 0x11 | Wechselcode nicht korrekt in EEPROM-Spiegel programmiert |
+| 0x21 | 2-aus-3-Startwertablage im Flash nicht in Ordnung |
+
+**Висновки**: це таблиці СТАТУСІВ, не параметрів. Статус 0x05 скидається на кожен цикл запалювання → після першої синхронізації ми читали ews_empfang ПІСЛЯ перезапуску, тож результат синхронізації не побачили. Потрібно: в ОДНОМУ циклі — ews_startwert → dme_startwert_abgleich (CAS) → одразу ews_empfang (результат синхронізації) → ews_startwert.
