@@ -158,3 +158,8 @@
 - Доступ: BMW AOS (aos.bmwgroup.com, ліцензія ISTA на години/добу для незалежних) або сервіс з ISTA. Офіційно потрібен інтерфейс BMW ICOM; K+DCAN з ISTA — лише неофіційно.
 - У ISTA: ідентифікація по VIN → короткий тест → помилки CAS/DDE → тест-план EWS; сервісні функції (Vehicle access / CAS / EWS: синхронізація DME/DDE ↔ CAS) — назви пунктів перевірити на місці; схеми — вкладка схем електрообладнання (пошук CAS / EWS / DDE).
 - Попросити сервіс: перевірити зв'язок EWS CAS→DDE і виконати синхронізацію; показати їм нотатки (ews_startwert 0x01, ews_empfang 0x05 при CAS-синхронізації OKAY).
+
+### INPA → E70 → Body → Car Access System (працює; періодично IFH-0010)
+- Read initialised indicator: CAS ECU = **Locked**, TRSP SW = **Activated** → норма для робочого авто (CAS ініціалізований і заблокований, ПЗ транспондера активне).
+- Status RC signal: усі 00 (брелок, не стосується).
+- Далі: CAN Signale → F1 Engine status, F2 Ignition/Key; F7 CAS/EWS version; F4 actual key.
