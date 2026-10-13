@@ -85,3 +85,4 @@
 - istufe_lesen_cas: сирі байти `0B 15 E1 3C CB 2C D4 34` (текст не декодовано).
 - DDE: ті самі помилки (живлення/MAF — «bisher nicht aufgetreten», свічки), ews_empfang = 5.
 - Далі: fs_lesen_detail 0xA126 у CAS; Job-Info `dme_startwert_abgleich`.
+- **Job-Info `dme_startwert_abgleich` (CAS)**: «Kopiert bei der EWS-Stufe 3 die I… und startet dann die Initialisierung der DME»; Vorbedingungen: keine; KWP2000 $31 StartRoutineByLocalIdentifier $20; без аргументів; результат лише JOB_STATUS. → Це саме синхронізація EWS3 CAS→DDE. Текст обрізано праворуч — дочитати.
