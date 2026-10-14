@@ -183,3 +183,10 @@
 - bimmerfest (E60 530d, «4A63 EWS Manipulation»): виправлено в INPA через скидання стартового значення CAS + reset; люди купують новий CAS, коли треба лише програмний reset.
 - xoutpost E53: на деяких версіях INPA ресинхронізація некоректна → DIS/ISTA.
 - Висновок: процедура «reset» — стандартне рішення; ключові умови — напруга ~13.5–14 В, можлива потреба повторити.
+
+### ✅✅ Процедура «reset» УСПІШНА (13.39 В)
+1. D_CAS IDENT → OKAY
+2. D_CAS DME_STARTWERT_ABGLEICH → OKAY (71 20 44)
+3. D_MOTOR EWS_STARTWERT **0x01** → запит `31 83 01`, відповідь `71 83 00`: **0x00 «DDE bereit, Startwert zu empfangen»**
+4. D_MOTOR EWS_EMPFANG **0x01** → **0x00 «Startwertprogrammierung bzw. -ruecksetzen war erfolgreich»**
+→ Синхронізацію EWS CAS↔DDE відновлено. Провід EWS цілий (теорію з обривом відкинуто). Далі: запалювання вимк., ключ вийняти, 30 с, запуск.
