@@ -225,3 +225,4 @@
 - Ще один EDIABAS 7.3.0 ini: Interface = STD:passthrud (J2534), RemoteHost 192.168.68.40 — інша інсталяція (уточнити шлях).
 - EDIABAS 7.7.1 (ISTA, C:\Program Files\BMW\ISPI\TRIC\ISTA\Ediabas): Interface = ENET; у самому файлі зазначено, що драйвер STD:OBD більше не входить до пакета → ISTA з K+DCAN «з коробки» не працюватиме без додаткового налаштування.
 - Рекомендація: спершу НЕ змінювати конфігурації; зробити комбіновану спробу INPA CAS F2 (Write start value + Reset CAS) → Toolset32 DDE EWS_STARTWERT 0x01 → EWS_EMPFANG.
+- Власник: EDIABAS 7.7.1 (ISTA) і другий 7.3 (STD:passthrud) — свіжо встановлені, потребують налаштування. План: бекап усіх EDIABAS.INI; C:\EDIABAS (робочий STD:OBD) не чіпати; ISTA → VCI Config «Ediabas default settings»; у ISTA\Ediabas\BIN — Interface = STD:OBD + драйвер OBD (OBD32.DLL/OBD.INI з C:\EDIABAS\BIN), можливо LoadWin64 = 0; перевірити списком файлів BIN.
