@@ -190,3 +190,9 @@
 3. D_MOTOR EWS_STARTWERT **0x01** → запит `31 83 01`, відповідь `71 83 00`: **0x00 «DDE bereit, Startwert zu empfangen»**
 4. D_MOTOR EWS_EMPFANG **0x01** → **0x00 «Startwertprogrammierung bzw. -ruecksetzen war erfolgreich»**
 → Синхронізацію EWS CAS↔DDE відновлено. Провід EWS цілий (теорію з обривом відкинуто). Далі: запалювання вимк., ключ вийняти, 30 с, запуск.
+
+### Після reset — не завівся (14.10.2026)
+- ews_startwert (0x00) → знову 0x01 «kein freier Startwert mit Freigabe»; ews_empfang → 0x05 (новий цикл).
+- **НОВА помилка DDE: 4A63 «EWS Manipulation — falscher Wechselcode»** (неправильний плаваючий код при спробі запуску).
+- Висновок: зв'язок CAS→DDE ПРАЦЮЄ (DDE отримав код, але неправильний). Reset лише перевів DDE у стан «готовий прийняти» (0x00), але стартове значення НЕ було перенесене → при запуску плаваючий код не збігся.
+- Наступне: в ОДНОМУ циклі — спершу «reset» (F2: CAS abgleich + EWS_STARTWERT 0x01 + EWS_EMPFANG 0x01), одразу потім «store/übertragen» (F1: CAS abgleich + EWS_STARTWERT 0x00 + EWS_EMPFANG 0x01), перевірити статуси, потім ключ 30 с і запуск.
