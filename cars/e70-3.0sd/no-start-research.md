@@ -207,3 +207,13 @@
 - INPA CAS → F6 Activate: F1 Activate iodigital, **F2 Sync. Motor ECU**, F3 RSE remote, **F4 Reset ECU**.
 - Форум (bimmerfest, E60 530d, 4A63): допомогло «CAS start-value reset, then a reset» → відповідає F2 → F4 (перезапуск CAS після синхронізації).
 - План: варіант A — F2 → F4 → зап. вимк. 30 с → запуск; варіант B (якщо A не спрацює) — Toolset32 DDE EWS_STARTWERT 0x01 → INPA CAS F2 → F4 → перевірка ews_empfang.
+
+### ⭐ INPA CAS → Activate → F2 «Sync. Motor ECU» = повна офіційна послідовність
+| Крок INPA | Результат |
+|---|---|
+| Write start value (CAS) | i.O. |
+| **Reset CAS** | i.O. |
+| Prepare DME | **n.i.O.** — INPA зупинився: варіант DDE D62M57A0 відсутній у списку скрипта CAS |
+| Receiving status | Not tested |
+Потім F4 Reset ECU (CAS) → done.
+**Висновок**: ми пропускали крок **Reset CAS** між записом стартового значення і підготовкою DDE. Правильний порядок (в одному циклі): CAS `dme_startwert_abgleich` → CAS `steuergeraete_reset` → DDE `ews_startwert 0x01` (Prepare DME) → DDE `ews_empfang` (Receiving status). Кроки DDE робити в Toolset32, бо INPA не підтримує D62M57A0.
