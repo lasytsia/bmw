@@ -202,3 +202,5 @@
 - Новий цикл (KL15 без прокручування і після прокручування): ews_empfang 0x05, ews_startwert(0x00) 0x01; 4A63 без змін. → Стан «готовий» після reset НЕ зберігається між циклами; CAS при KL15 стартове значення не передав.
 - Спробувані порядки: (CAS abgleich → DDE reset) ✔ reset, але передачі немає; (+ store 0x00) відхилено.
 - НЕ спробуваний порядок: **DDE reset (0x01) → одразу CAS dme_startwert_abgleich** (CAS передає, коли DDE уже «слухає») → ews_empfang / ews_startwert(0x00). Наступна спроба — саме так; якщо ні — ISTA.
+- Порядок **DDE reset (0x01) → CAS dme_startwert_abgleich**: ews_empfang = **0x02 «Telegramminhalt war kein Startwert (event. Wechselcode)»**; ews_startwert(0x00) = 0x01.
+- **Висновок**: DDE «слухає» і ОТРИМУЄ телеграму від CAS (лінія працює), але CAS надсилає плаваючий код замість стартового значення. Проблема на боці CAS: він не переходить у режим передачі стартового значення DDE. → Шукати в INPA CAS (F6 Activate) функцію CAS-сторони для EWS/DME (лише фото, не натискати) або ISTA. Подальші reset DDE не повторювати.
