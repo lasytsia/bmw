@@ -204,3 +204,6 @@
 - НЕ спробуваний порядок: **DDE reset (0x01) → одразу CAS dme_startwert_abgleich** (CAS передає, коли DDE уже «слухає») → ews_empfang / ews_startwert(0x00). Наступна спроба — саме так; якщо ні — ISTA.
 - Порядок **DDE reset (0x01) → CAS dme_startwert_abgleich**: ews_empfang = **0x02 «Telegramminhalt war kein Startwert (event. Wechselcode)»**; ews_startwert(0x00) = 0x01.
 - **Висновок**: DDE «слухає» і ОТРИМУЄ телеграму від CAS (лінія працює), але CAS надсилає плаваючий код замість стартового значення. Проблема на боці CAS: він не переходить у режим передачі стартового значення DDE. → Шукати в INPA CAS (F6 Activate) функцію CAS-сторони для EWS/DME (лише фото, не натискати) або ISTA. Подальші reset DDE не повторювати.
+- INPA CAS → F6 Activate: F1 Activate iodigital, **F2 Sync. Motor ECU**, F3 RSE remote, **F4 Reset ECU**.
+- Форум (bimmerfest, E60 530d, 4A63): допомогло «CAS start-value reset, then a reset» → відповідає F2 → F4 (перезапуск CAS після синхронізації).
+- План: варіант A — F2 → F4 → зап. вимк. 30 с → запуск; варіант B (якщо A не спрацює) — Toolset32 DDE EWS_STARTWERT 0x01 → INPA CAS F2 → F4 → перевірка ews_empfang.
