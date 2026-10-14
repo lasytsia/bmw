@@ -217,3 +217,5 @@
 | Receiving status | Not tested |
 Потім F4 Reset ECU (CAS) → done.
 **Висновок**: ми пропускали крок **Reset CAS** між записом стартового значення і підготовкою DDE. Правильний порядок (в одному циклі): CAS `dme_startwert_abgleich` → CAS `steuergeraete_reset` → DDE `ews_startwert 0x01` (Prepare DME) → DDE `ews_empfang` (Receiving status). Кроки DDE робити в Toolset32, бо INPA не підтримує D62M57A0.
+- Toolset32 D_CAS steuergeraete_reset → ERROR_ECU_CONDITIONS_NOT_CORRECT (7F 11 22) — CAS не приймає прямий reset; INPA робить «Reset CAS» успішно іншим способом.
+- **Знайдено ISTA+ 4.53.40** на ПК власника → переходимо до ISTA: ідентифікація → короткий тест → помилки 4A63 (DDE) / CAS → тест-план EWS, або сервісні функції (синхронізація DME/DDE ↔ CAS).
