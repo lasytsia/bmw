@@ -219,3 +219,9 @@
 **Висновок**: ми пропускали крок **Reset CAS** між записом стартового значення і підготовкою DDE. Правильний порядок (в одному циклі): CAS `dme_startwert_abgleich` → CAS `steuergeraete_reset` → DDE `ews_startwert 0x01` (Prepare DME) → DDE `ews_empfang` (Receiving status). Кроки DDE робити в Toolset32, бо INPA не підтримує D62M57A0.
 - Toolset32 D_CAS steuergeraete_reset → ERROR_ECU_CONDITIONS_NOT_CORRECT (7F 11 22) — CAS не приймає прямий reset; INPA робить «Reset CAS» успішно іншим способом.
 - **Знайдено ISTA+ 4.53.40** на ПК власника → переходимо до ISTA: ідентифікація → короткий тест → помилки 4A63 (DDE) / CAS → тест-план EWS, або сервісні функції (синхронізація DME/DDE ↔ CAS).
+
+### Конфігурація EDIABAS на ПК власника
+- EDIABAS 7.3.0 (C:\EDIABAS): Interface = STD:OBD — працює з INPA/Toolset32, НЕ чіпати.
+- Ще один EDIABAS 7.3.0 ini: Interface = STD:passthrud (J2534), RemoteHost 192.168.68.40 — інша інсталяція (уточнити шлях).
+- EDIABAS 7.7.1 (ISTA, C:\Program Files\BMW\ISPI\TRIC\ISTA\Ediabas): Interface = ENET; у самому файлі зазначено, що драйвер STD:OBD більше не входить до пакета → ISTA з K+DCAN «з коробки» не працюватиме без додаткового налаштування.
+- Рекомендація: спершу НЕ змінювати конфігурації; зробити комбіновану спробу INPA CAS F2 (Write start value + Reset CAS) → Toolset32 DDE EWS_STARTWERT 0x01 → EWS_EMPFANG.
