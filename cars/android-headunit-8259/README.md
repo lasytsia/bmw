@@ -47,3 +47,44 @@ https://github.com/PanduruIonut/bmw-e90-android-headunit-825x
 - Прошивка під іншу роздільність або авто може дати чорний екран або прибрати оригінальне меню CCC.
 - Невідповідний MCU або CAN може зламати iDrive-джойстик, кнопки керма та задній хід.
 - Перед змінами сфотографувати всі екрани заводського меню.
+
+## Чи є прошивка, яку можна доопрацювати
+Публічного повного образу саме під цю збірку (`HMI BMW.G5…2021.11.29` + `TsBMW.211019` + `HC_v2.0.0_210506`) не знайдено.
+
+Схожі пакети є на XDA (сам я їх не відкривав, бачив лише в пошуку):
+- Tmotec 825X_Pro (ALPS/Topway, той самий `HC_v2.0.0_210506`): https://xdaforums.com/t/bmw-f10-f11-cic-tmotec-825x_pro-firmware-software-mcu-update-alps.4697315/
+- Junsun V1 Pro, у темі згадуються `TsBMW.211019` і `TsBMW.220511`: https://xdaforums.com/t/junsun-v1-pro-mtk8259-mtk8257-firmware.4283365/page-127
+- AC8257, Android 11 + бездротовий Android Auto: https://xdaforums.com/t/ac8257-base-unit-new-firmware-mcu-update-with-android-11-android-auto-wireless.4467385/
+
+**Найкраща основа: власний дамп із магнітоли.** Аналогічний блок має збірку `eng`/`test-keys` з SELinux у режимі permissive, тобто:
+- `adb root` має працювати без жодного злому;
+- системні APK можна переписати й підписати публічними ключами AOSP.
+
+### Крок 1. Перевірка через ADB по Wi‑Fi
+1. Налаштування → Про пристрій → 7 разів натиснути «Номер збірки» → Для розробників → USB debugging.
+2. Вимкнути бездротові CarPlay/AutoLink, бо інакше магнітола не підключається до Wi‑Fi. Під'єднати магнітолу й ноутбук до однієї мережі (підійде точка доступу з телефона).
+3. На ноутбуці:
+```
+adb connect <IP>:5555
+adb root
+adb shell getprop ro.build.type
+adb shell getprop ro.build.version.sdk
+adb shell getprop ro.build.tags
+adb shell ls -l /dev/block/by-name/
+adb shell cat /proc/partitions
+```
+
+### Крок 2. Дамп розділів (лише читання)
+```
+adb shell 'for p in boot recovery system vendor lk lk2 tee1 dtbo vbmeta preloader; do [ -e /dev/block/by-name/$p ] && dd if=/dev/block/by-name/$p of=/sdcard/$p.img bs=4M; done'
+adb pull /sdcard/*.img .
+```
+Плюс окремо скопіювати `metazone`/config-розділ, а також `/system/app` і `/system/priv-app` (там `com.ts.MainUI`).
+
+### Що реально можна змінити
+- Можна: лаунчер та UI (`com.ts.MainUI`), `build.prop`, root через Magisk (пропатчений `boot.img`), вбудовані застосунки, налаштування камери.
+- Практично ні: MCU (`TsBMW`) і CAN (`can_app.bin`). Це закриті бінарники без вихідних кодів; лише заміна на інші готові версії.
+
+### Аварійне відновлення
+SP Flash Tool з readback eMMC, як описано для AC8259 тут: https://github.com/initialChris/junsun-v1pro-recovery
+Scatter-файл звідти чужий, тож без повного власного бекапу нічого не форматувати.
